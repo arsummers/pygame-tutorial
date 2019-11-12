@@ -35,3 +35,22 @@ while running:
         elif event.type == QUIT:
             running = False
 
+# fills screen with white
+screen.fill((255, 255, 255))
+
+# creates a surface, passes in length and width
+surf = pygame.Surface((50,50))
+
+# gives surface a color to separate it from background
+surf.fill((0, 0, 0))
+rect = surf.get_rect()
+
+# finds actual middle of the surface
+surf_center = (
+    (SCREEN_WIDTH-surf.get_width())/2,
+    (SCREEN_HEIGHT-surf.get_height())/2
+)
+
+# blit copies the contents of one surface to another
+screen.blit(surf, surf_center)
+pygame.display.flip()
