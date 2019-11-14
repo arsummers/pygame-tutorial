@@ -11,13 +11,27 @@ from pygame.locals import (
     QUIT,
 )
 
-# initializes game
-pygame.init()
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+# player sprite class - extends pygame's sprite class
+# surface on the screen is an attribute of the player class
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+        self.surf = pygame.Surface((75, 25))
+        self.surf.fill((255, 255, 255))
+        self.rect = self.surf.get_rect()
+
+# initializes game
+pygame.init()
+
+# creates screen object
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# instantiates a player
+player = Player()
 
 # starts the game loop
 running = True
@@ -43,14 +57,8 @@ surf = pygame.Surface((50,50))
 
 # gives surface a color to separate it from background
 surf.fill((0, 0, 0))
-rect = surf.get_rect()
 
-# finds actual middle of the surface
-surf_center = (
-    (SCREEN_WIDTH-surf.get_width())/2,
-    (SCREEN_HEIGHT-surf.get_height())/2
-)
 
 # blit copies the contents of one surface to another
-screen.blit(surf, surf_center)
+screen.blit(player.surf, player.rect)
 pygame.display.flip()
