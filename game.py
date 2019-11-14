@@ -11,13 +11,26 @@ from pygame.locals import (
     QUIT,
 )
 
-# initializes game
-pygame.init()
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+# player sprite class - extends pygame's sprite class
+# surface on the screen is an attribute of the player class
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+        self.surf = pygame.Surface((75, 25))
+        self.surf.fill((255, 255, 255))
+        self.rect = self.surf.get_rect()
+
+# initializes game
+pygame.init()
+
+# creates screen object
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# instantiates a player
+player = Player()
 
 # starts the game loop
 running = True
@@ -27,7 +40,7 @@ while running:
     for event in pygame.event.get():
         # checks if user hit a key - not checking for only the down key
         if event.type == KEYDOWN:
-            # stops loop is escape key hit
+            # stops loop if escape key hit
             if event.key == K_ESCAPE:
                 running = False
         
@@ -35,22 +48,10 @@ while running:
         elif event.type == QUIT:
             running = False
 
-# fills screen with white
-screen.fill((255, 255, 255))
+    # gives surface a color to separate it from background
+    screen.fill((0, 0, 0))
 
-# creates a surface, passes in length and width
-surf = pygame.Surface((50,50))
+    # blit copies the contents of one surface to another
+    screen.blit(player.surf, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
-# gives surface a color to separate it from background
-surf.fill((0, 0, 0))
-rect = surf.get_rect()
-
-# finds actual middle of the surface
-surf_center = (
-    (SCREEN_WIDTH-surf.get_width())/2,
-    (SCREEN_HEIGHT-surf.get_height())/2
-)
-
-# blit copies the contents of one surface to another
-screen.blit(surf, surf_center)
-pygame.display.flip()
+    pygame.display.flip()
