@@ -11,7 +11,6 @@ from pygame.locals import (
     QUIT,
 )
 
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -41,7 +40,7 @@ while running:
     for event in pygame.event.get():
         # checks if user hit a key - not checking for only the down key
         if event.type == KEYDOWN:
-            # stops loop is escape key hit
+            # stops loop if escape key hit
             if event.key == K_ESCAPE:
                 running = False
         
@@ -49,16 +48,10 @@ while running:
         elif event.type == QUIT:
             running = False
 
-# fills screen with white
-screen.fill((255, 255, 255))
+    # gives surface a color to separate it from background
+    screen.fill((0, 0, 0))
 
-# creates a surface, passes in length and width
-surf = pygame.Surface((50,50))
+    # blit copies the contents of one surface to another
+    screen.blit(player.surf, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
-# gives surface a color to separate it from background
-surf.fill((0, 0, 0))
-
-
-# blit copies the contents of one surface to another
-screen.blit(player.surf, player.rect)
-pygame.display.flip()
+    pygame.display.flip()
