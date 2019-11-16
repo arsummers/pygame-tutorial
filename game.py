@@ -1,84 +1,57 @@
 import pygame
+import os
+import sys
 
-# imports controls
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-
-# player sprite class - extends pygame's sprite class
-# surface on the screen is an attribute of the player class
 class Player(pygame.sprite.Sprite):
+    """
+    spawns a player
+    """
     def __init__(self):
-        super(Player, self).__init__()
-        self.surf = pygame.Surface((75, 25))
-        self.surf.fill((255, 255, 255))
-        self.rect = self.surf.get_rect()
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        for i in range(1, 5):
+            img = pygame.image.load(os.path.join('images','hero' + str(i) + '.png'))
+            self.images.append(img)
+            self.image = self.images[0]
+            self.rect = self.image.get_rect()
 
-    # method that moves the sprite based on user key press input
-    def update(self, pressed_keys):
-        if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -5)
-        if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
+# objects
 
-        #  keeps player from running off the screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        if self.rect.bottom >= SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
+# setup
+worldx = 800
+worldy = 600
 
-# initializes game
+world = pygame.display.set_mode([worldx, worldy])
+backdrop = pygame.image.load(os.path.join('images','stage.png'))
+backdropbox = world.get_rect()
+
+BLUE  = (25,25,200)
+BLACK = (23,23,23 )
+WHITE = (254,254,254)
+
+fps = 40 #frame rate
+ani = 4 #animation cycles
+clock = pygame.time.Clock()
 pygame.init()
 
-# creates screen object
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+# main game loop
 
-# instantiates a player
-player = Player()
-
-# starts the game loop
 running = True
 
-while running:
-    # looks at each event in the queue
+while running == True:
     for event in pygame.event.get():
-        # checks if user hit a key - not checking for only the down key
-        if event.type == KEYDOWN:
-            # stops loop if escape key hit
-            if event.key == K_ESCAPE:
+        if event.type == pygame.QUIT:
+            pygame.quit(); sys.exit()
+        
+        # checks if a key is pressed
+        if event.type == pygame.KEYDOWN:
+            if event.key == ord('q'):
+                pygame.quit()
+                sys.exit()
                 running = False
         
-        # stops loop and closes window if the user clicks the close button
-        elif event.type == QUIT:
-            running = False
-
-    # get the set of keys pressed and check for user input
-    pressed_keys = pygame.key.get_pressed()
-
-    # updates sprite based on user key presses
-    player.update(pressed_keys)
-
-    # gives surface a color to separate it from background
-    screen.fill((0, 0, 0))
-
-    # blit copies the contents of one surface to another
-    screen.blit(player.surf, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+    # fills world with background image
+    world.blit(backdrop, backdropbox)
 
     pygame.display.flip()
+    clock.tick(fps)
