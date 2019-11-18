@@ -25,6 +25,15 @@ world = pygame.display.set_mode([worldx, worldy])
 backdrop = pygame.image.load(os.path.join('images','stage.png'))
 backdropbox = world.get_rect()
 
+# brings a Player instance into the rest of the code
+player = Player()
+# starting positions
+player.rect.x = 0
+player.rect.y = 0
+player_list = pygame.sprite.Group()
+player_list.add(player)
+
+
 BLUE  = (25,25,200)
 BLACK = (23,23,23 )
 WHITE = (254,254,254)
@@ -52,6 +61,6 @@ while running == True:
         
     # fills world with background image
     world.blit(backdrop, backdropbox)
-
+    player_list.draw(world) #draws player
     pygame.display.flip()
     clock.tick(fps)
