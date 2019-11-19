@@ -14,6 +14,10 @@ class Player(pygame.sprite.Sprite):
     """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.movex = 0 #move along x axis
+        self.movey = 0 #move alone y axis
+        self.frame = 0 #counts frames
+
         self.images = []
         for i in range(1, 5):
             img = pygame.image.load(os.path.join('images','hero' + str(i) + '.png'))
@@ -21,9 +25,36 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images[0]
             self.rect = self.image.get_rect()
 
+    def control(self, x, y):
+        """
+        control player movement
+        """
+        self.movex += x
+        self.movey += y
+    
+    def update(self):
+        """
+        update sprite position
+        """
+        self.rect.x = self.rect.x + self.movex
+        self.rect.y = self.rect.y + self.movey
+        # move left
+        if self.movex < 0:
+            self.frame += 1
+            if self.frame > 3*ani:
+                self.frame = 0
+            self.image = self.images[self.frame//ani]
+        # move right
+        if self.movex > 0:
+            self.frame += 1
+            if self.frame > 3*ani:
+                self.frame = 0
+            self.image = self.images[(self.frame//ani)+4]
+
 # objects
 
 # setup
+
 worldx = 800
 worldy = 600
 
@@ -38,6 +69,7 @@ player.rect.x = 0
 player.rect.y = 0
 player_list = pygame.sprite.Group()
 player_list.add(player)
+steps = 10 #number of pixels to move
 
 
 fps = 40 #frame rate
@@ -58,17 +90,17 @@ while running == True:
         # checks if a key is pressed
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
-                print('move left')
+                player.control(-steps, 0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                print('move right')
+                player.control(steps, 0)
             if event.key == pygame.K_UP or event.key == ord('w'):
                 print('jump')
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
-                     print('left stop')
+                     player.control(steps, 0)
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    print('right stop')
+                    player.control(-steps, 0)
                    
                 if event.key == ord('q'):
                     pygame.quit()
