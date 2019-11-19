@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
             self.frame += 1
             if self.frame > 3*ani:
                 self.frame = 0
-            self.image = self.images[(self.frame//ani)+4]
+            self.image = self.images[(self.frame//ani)+1]
 
 # objects
 
@@ -109,6 +109,7 @@ while running == True:
         
     # fills world with background image
     world.blit(backdrop, backdropbox)
+    player.update() #updates player position
     player_list.draw(world) #draws player
     pygame.display.flip()
     clock.tick(fps)
