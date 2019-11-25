@@ -126,5 +126,6 @@ while running == True:
     world.blit(backdrop, backdropbox)
     player.update() #updates player position
     player_list.draw(world) #draws player
+    enemy_list.draw(world) #draws enemy
     pygame.display.flip()
     clock.tick(fps)
