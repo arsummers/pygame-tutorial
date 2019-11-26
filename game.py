@@ -62,6 +62,15 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class Level():
+    def bad(lvl, eloc):
+        if lvl == 1:
+            enemy = Enemy(eloc[0], eloc[1], 'enemy.png')
+            enemy_list = pygame.sprite.Group()
+            enemy_list.add(enemy)
+        if lvl == 2:
+            print("Level " + str(lvl))
+        return enemy_list
 # objects
 
 # setup
@@ -82,9 +91,9 @@ player_list = pygame.sprite.Group()
 player_list.add(player)
 steps = 10 #number of pixels to move
 
-enemy = Enemy(20, 200, 'enemy.png') #spawns enemy, 20 is x pos, 200 is y pos
-enemy_list = pygame.sprite.Group()
-enemy_list.add(enemy)
+eloc = []
+eloc = [200, 20]
+enemy_list = Level.bad(1, eloc)
 
 
 fps = 40 #frame rate
