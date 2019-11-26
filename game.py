@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.movex = 0 #move along x axis
         self.movey = 0 #move alone y axis
         self.frame = 0 #counts frames
+        self.health = 10
 
         self.images = []
         for i in range(1, 5):
@@ -50,6 +51,10 @@ class Player(pygame.sprite.Sprite):
             if self.frame > 3*ani:
                 self.frame = 0
             self.image = self.images[(self.frame//ani)+1]
+        hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
+        for enemy in hit_list:
+            self.health -= 1
+            print(self.health)
 
 class Enemy(pygame.sprite.Sprite):
     """
@@ -61,7 +66,25 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.counter = 0
+    
+    # def move(self):
+    #     """
+    #     moves enemy
+    #     """
+    #     distance = 80
+    #     speed = 8
 
+
+class Level():
+    def bad(lvl, eloc): #expected linter error
+        if lvl == 1:
+            enemy = Enemy(eloc[0], eloc[1], 'enemy.png')
+            enemy_list = pygame.sprite.Group()
+            enemy_list.add(enemy)
+        if lvl == 2:
+            print("Level " + str(lvl))
+        return enemy_list
 # objects
 
 # setup
@@ -82,9 +105,9 @@ player_list = pygame.sprite.Group()
 player_list.add(player)
 steps = 10 #number of pixels to move
 
-enemy = Enemy(20, 200, 'enemy.png') #spawns enemy, 20 is x pos, 200 is y pos
-enemy_list = pygame.sprite.Group()
-enemy_list.add(enemy)
+eloc = []
+eloc = [200, 20]
+enemy_list = Level.bad(1, eloc)
 
 
 fps = 40 #frame rate
