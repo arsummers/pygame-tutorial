@@ -68,13 +68,20 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = y
         self.counter = 0
     
-    # def move(self):
-    #     """
-    #     moves enemy
-    #     """
-    #     distance = 80
-    #     speed = 8
-
+    def move(self):
+        """
+        moves enemy
+        """
+        distance = 80
+        speed = 8
+    
+        if self.counter >= 0 and self.counter <= distance:
+            self.rect.x += speed
+        elif self.counter >= distance and self.counter <= distance*2:
+            self.rect.x -= speed
+        else:
+            self.counter = 0
+        self.counter += 1
 
 class Level():
     def bad(lvl, eloc): #expected linter error
@@ -150,5 +157,7 @@ while running == True:
     player.update() #updates player position
     player_list.draw(world) #draws player
     enemy_list.draw(world) #draws enemy
+    for e in enemy_list:
+        e.move()
     pygame.display.flip()
     clock.tick(fps)
