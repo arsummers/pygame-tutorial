@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
             self.frame += 1
             if self.frame > 3*ani:
                 self.frame = 0
-            self.image = self.images[(self.frame//ani)+1]
+            self.image = self.images[(self.frame//ani)]
         hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
         for enemy in hit_list:
             self.health -= 1
