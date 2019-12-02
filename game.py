@@ -151,9 +151,13 @@ while running == True:
                 player.control(-steps, 0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 player.control(steps, 0)
-            #jumping
+            #jumps up
             if event.key == pygame.K_UP or event.key == ord('w'):
                 player.control(0, -10)
+            # falls
+            if event.key == pygame.K_DOWN or event.key == ord('s'):
+                player.control(0, 10)
+
 
 
             if event.type == pygame.KEYUP:
