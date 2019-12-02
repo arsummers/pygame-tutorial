@@ -51,6 +51,19 @@ class Player(pygame.sprite.Sprite):
             if self.frame > 3*ani:
                 self.frame = 0
             self.image = self.images[(self.frame//ani)]
+        # jump down
+        if self.movey < 0:
+            self.frame += 1
+            if self.frame > 3*ani:
+                self.frame = 0
+            self.image = self.images[(self.frame//ani)]
+        # jump up
+        if self.movey > 0:
+            self.frame += 1
+            if self.frame > 3*ani:
+                self.frame = 0
+            self.image = self.images[(self.frame//ani)]  
+        
         hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
         for enemy in hit_list:
             self.health -= 1
@@ -107,17 +120,17 @@ backdropbox = world.get_rect()
 player = Player()
 # starting positions
 player.rect.x = 0
-player.rect.y = 0
+player.rect.y = 100
 player_list = pygame.sprite.Group()
 player_list.add(player)
 steps = 10 #number of pixels to move
 
-eloc = []
+eloc = [] #enemy location
 eloc = [200, 20]
 enemy_list = Level.bad(1, eloc)
 
 
-fps = 40 #frame rate
+fps = 20 #frame rate
 ani = 4 #animation cycles
 clock = pygame.time.Clock()
 pygame.init()
@@ -138,8 +151,10 @@ while running == True:
                 player.control(-steps, 0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 player.control(steps, 0)
+            #jumping
             if event.key == pygame.K_UP or event.key == ord('w'):
-                print('jump')
+                player.control(0, -10)
+
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
