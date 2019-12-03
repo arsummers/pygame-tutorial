@@ -32,7 +32,14 @@ class Player(pygame.sprite.Sprite):
         """
         self.movex += x
         self.movey += y
-    
+
+    def stop(self):
+        """
+        stops player on space bar
+        """
+        self.movex = 0
+        self.movey = 0
+
     def update(self):
         """
         update sprite position
@@ -157,19 +164,18 @@ while running == True:
             # falls
             if event.key == pygame.K_DOWN or event.key == ord('s'):
                 player.control(0, 10)
+                
+            # quits game upon hitting q  
+            if event.key == ord('q'):
+                pygame.quit()
+                sys.exit()
+                running = False
 
-
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == ord('a'):
-                     player.control(steps, 0)
-                if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                    player.control(-steps, 0)
-                   
-                if event.key == ord('q'):
-                    pygame.quit()
-                    sys.exit()
-                    running = False
+        # checks if key is released
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == ord('a') or event.key == pygame.K_RIGHT or event.key == ord('d'):
+                player.stop()
+                
         
     # fills world with background image
     world.blit(backdrop, backdropbox)
